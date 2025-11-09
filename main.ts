@@ -1,22 +1,36 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js";
-import { PointerLockControls } from "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/controls/PointerLockControls.js";
+import * as THREE from "three";
+import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 
-let camera, scene, renderer, controls;
-let overlay = document.getElementById("overlay");
-let crosshair = document.getElementById("crosshair");
+let camera: THREE.PerspectiveCamera;
+let scene: THREE.Scene;
+let renderer: THREE.WebGLRenderer;
+let controls: PointerLockControls;
 
-let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false, canJump = false;
-let velocity = new THREE.Vector3();
-let direction = new THREE.Vector3();
+const overlay = document.getElementById("overlay")!;
+const crosshair = document.getElementById("crosshair")!;
+
+let moveForward = false;
+let moveBackward = false;
+let moveLeft = false;
+let moveRight = false;
+let canJump = false;
+
+const velocity = new THREE.Vector3();
+const direction = new THREE.Vector3();
 
 init();
 animate();
 
-function init() {
+function init(): void {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x87ceeb);
 
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
   camera.position.y = 2;
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -68,32 +82,59 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 }
 
-function onKeyDown(event) {
-  switch(event.code){
-    case "ArrowUp": case "KeyW": moveForward = true; break;
-    case "ArrowLeft": case "KeyA": moveLeft = true; break;
-    case "ArrowDown": case "KeyS": moveBackward = true; break;
-    case "ArrowRight": case "KeyD": moveRight = true; break;
-    case "Space": if(canJump) velocity.y = 5; canJump = false; break;
+function onKeyDown(event: KeyboardEvent): void {
+  switch (event.code) {
+    case "ArrowUp":
+    case "KeyW":
+      moveForward = true;
+      break;
+    case "ArrowLeft":
+    case "KeyA":
+      moveLeft = true;
+      break;
+    case "ArrowDown":
+    case "KeyS":
+      moveBackward = true;
+      break;
+    case "ArrowRight":
+    case "KeyD":
+      moveRight = true;
+      break;
+    case "Space":
+      if (canJump) velocity.y = 5;
+      canJump = false;
+      break;
   }
 }
 
-function onKeyUp(event) {
-  switch(event.code){
-    case "ArrowUp": case "KeyW": moveForward = false; break;
-    case "ArrowLeft": case "KeyA": moveLeft = false; break;
-    case "ArrowDown": case "KeyS": moveBackward = false; break;
-    case "ArrowRight": case "KeyD": moveRight = false; break;
+function onKeyUp(event: KeyboardEvent): void {
+  switch (event.code) {
+    case "ArrowUp":
+    case "KeyW":
+      moveForward = false;
+      break;
+    case "ArrowLeft":
+    case "KeyA":
+      moveLeft = false;
+      break;
+    case "ArrowDown":
+    case "KeyS":
+      moveBackward = false;
+      break;
+    case "ArrowRight":
+    case "KeyD":
+      moveRight = false;
+      break;
   }
 }
 
-function onWindowResize() {
+function onWindowResize(): void {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animate() {
+function animate(): void {
   requestAnimationFrame(animate);
 
   if (controls.isLocked) {
