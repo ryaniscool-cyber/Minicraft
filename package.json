@@ -1,0 +1,16 @@
+{
+  "name": "minicraft",
+  "version": "1.0.0",
+  "description": "A simple Minecraft-style voxel world using Three.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "three": "^0.169.0"
+  }
+}
